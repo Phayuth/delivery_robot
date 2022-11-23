@@ -1,0 +1,7 @@
+<launch>
+	
+	<node pkg="delivery-robot" type="wlradian.py" name="wheelradconvt_node" output="screen"> </node>
+
+	<node pkg="delivery-robot" type="odom_encd.py" name="encod_node" output="screen"> </node>
+
+</launch>

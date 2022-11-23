@@ -1,0 +1,11 @@
+Credit all model below to their respective owner.
+
+1. LCD_Adafruit_HDMI_7inch  |  https://grabcad.com/library/7-hdmi-adafruit-touch-screen-1
+2. LIDAR_Hokuyo_UTM_30LX    |  https://grabcad.com/library/hokuyo-utm-30lx-2
+3. Voltage_Display          |  https://grabcad.com/library/vu-voltmeter-ammeter-1
+4. Battery_Switch           |  https://grabcad.com/library/power-switch-irs-201-3c-1
+5. E_Stop_Button            |  https://grabcad.com/library/push-button-emergency-stop-switch-1
+6. AC_Power_Socket          |  https://grabcad.com/library/ac-power-socket-1
+7. Arduino_Due              |  https://grabcad.com/library/arduino-due-1
+8. Logitech_Cam             |  https://grabcad.com/library/logitech-c920-webcam-1
+9. LED_Indicator            |  https://grabcad.com/library/indicator-lamp-ad16-16e-led-d16mm-230-v-apt-1

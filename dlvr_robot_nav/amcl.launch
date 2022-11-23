@@ -1,0 +1,11 @@
+<launch>
+  <!-- <remap from="odom" to="odom_data_quat" />
+  <remap from="imu_data" to="imu/data" /> -->
+  
+  <!-- Add AMCL example for differential drive robots for Localization -->
+  <!-- Subscribe: /scan, /tf, /initialpose, /map -->
+  <!-- Publish: /amcl_pose, /particlecloud, /tf -->
+  <include file="$(find amcl)/examples/amcl_diff.launch"/>
+	
+
+</launch>
