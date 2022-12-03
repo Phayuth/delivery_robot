@@ -1,4 +1,4 @@
-<img align="right" src="/img.jpg" width="240">
+<img align="right" src="dlvr_resource/img.jpg" width="240">
 
 # Delivery Mobile Robot
 This Package is created for My Differential Drive Mobile Robot for Indoor Delivery. It is for ROS Melodic.[For Mom!]
