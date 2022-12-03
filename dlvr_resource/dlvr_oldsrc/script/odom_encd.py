@@ -54,13 +54,13 @@ class forward_kinematic(object):
 			
 			odom = Odometry()
 			odom.header.stamp = self.time_now
-			odom.header.frame_id = "Odom_frame"
-			odom.child_frame_id = "Base_link"
+			odom.header.frame_id = "odom_frame"
+			odom.child_frame_id = "base_link"
 			quat = tf.transformations.quaternion_from_euler(0,0,self.t)
 			odom.pose.pose = Pose(Point(self.x,self.y,0.),Quaternion(*quat))
 
 			tf_broadcaster = tf.TransformBroadcaster()
-			tf_broadcaster.sendTransform((self.x,self.y,0.),quat,rospy.Time.now(),"Base_link","Odom_frame")
+			tf_broadcaster.sendTransform((self.x,self.y,0.),quat,rospy.Time.now(),"base_link","odom_frame")
 			
 			self.odom_pub.publish(odom)
 
