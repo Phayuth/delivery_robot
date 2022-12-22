@@ -1,11 +1,11 @@
 void left_cmd_pwm_cb(const std_msgs::Float32& msg)
 {
-  L_pwm = msg.data;
+  L_omega_d = msg.data;
 }
 
 void right_cmd_pwm_cb(const std_msgs::Float32& msg)
 {
-  R_pwm = msg.data;
+  R_omega_d = msg.data;
 }
 
 float tick_2_theta(int tick, float PPR, float GR) {

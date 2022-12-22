@@ -3,26 +3,14 @@
 #include <ros.h>
 #include <dlvr_robot_msg/motor_stat.h>
 #include <std_msgs/Float32.h>
-#include <sensor_msgs/Imu.h>
 #include <ros/time.h>
-#include <tf/tf.h>
-#include <tf/transform_broadcaster.h>
-#include <geometry_msgs/Quaternion.h>
-
-#include <Wire.h>
-#include <Adafruit_Sensor.h>
-#include <Adafruit_BNO055.h>
-#include <utility/imumaths.h>
 
 // Time interval for handling control loop
 unsigned long time_old, time_new;
 float Ts;
 
 // Time interval for handling publish
-const int imu_interval = 100;
 const int motor_interval = 30;
-unsigned long imu_previousMillis = 0;
-unsigned long imu_currentMillis = 0;
 unsigned long motor_previousMillis = 0;
 unsigned long motor_currentMillis = 0;
 
@@ -36,8 +24,8 @@ uint8_t L_enc_A = 10;
 uint8_t L_enc_B = 11;
 
 // Left Motor Parameters
-float L_a = 28.37;
-float L_b = 19.15;
+float L_a = 26.63;
+float L_b = 17.26;
 float L_PPR = 28;
 float L_GR = 19.2 * 3.75;
 float L_theta_p = 0;
@@ -82,10 +70,6 @@ float R_error = 0;
 float R_u = 0;
 int R_pwm;
 
-// -------------------------------------------------------------------------------------------------
-// Init IMU object
-Adafruit_BNO055 myIMU = Adafruit_BNO055(55, 0x28);
-
 // ROS -------------------------------------------------------------------------
 ros::NodeHandle nh;
 void left_cmd_pwm_cb(const std_msgs::Float32& msg); // function prototype
@@ -94,11 +78,6 @@ void right_cmd_pwm_cb(const std_msgs::Float32& msg); // function prototype
 // Publish Motor Stat
 dlvr_robot_msg::motor_stat pub_motor_stat;
 ros::Publisher motorPub("/dlvr/left_motor_stat", &pub_motor_stat);
-
-// Publish Imu
-sensor_msgs::Imu imu_data;
-ros::Publisher imupub("imu", &imu_data);
-geometry_msgs::Quaternion q;
 
 // Subscribe Left/Right wheel velocity
 ros::Subscriber<std_msgs::Float32> left_sub("/dlvr/left_motor_desired", &left_cmd_pwm_cb);
@@ -122,11 +101,6 @@ void setup() {
   attachInterrupt(R_enc_A, ai8, CHANGE);
   attachInterrupt(R_enc_B, ai9, CHANGE);
 
-  // IMU
-  myIMU.begin();
-  delay(1000);
-  myIMU.setExtCrystalUse(true);
-
   // Time Record
   time_old = millis();
   time_new = millis();
@@ -137,15 +111,13 @@ void setup() {
   nh.subscribe(left_sub);
   nh.subscribe(right_sub);
   nh.advertise(motorPub);
-  nh.advertise(imupub);
 }
 
 void loop() {
   // Find out how time has passed
-  delay(1); // put delay here to avoid 0/0 NaN, I dont know how to fix it yet.
+  delay(1);
   time_new = millis(); // handle control loop
   motor_currentMillis = millis(); // handle publisher loop
-  imu_currentMillis = millis(); // handle publisher loop
 
   Ts = (time_new - time_old) * 0.001; // convert from milli second (ms) to second(s)
 
@@ -182,39 +154,6 @@ void loop() {
     pub_motor_stat.encoder_right = R_counter;
 
     motorPub.publish( &pub_motor_stat );
-  }
-
-  if (imu_currentMillis - imu_previousMillis > imu_interval) {
-
-    imu_previousMillis = imu_currentMillis;
-
-    uint8_t system, gyro, accel, mg = 0;
-    myIMU.getCalibration(&system, &gyro, &accel, &mg);
-    imu::Vector<3> acc = myIMU.getVector(Adafruit_BNO055::VECTOR_ACCELEROMETER);
-    imu::Vector<3> gyr = myIMU.getVector(Adafruit_BNO055::VECTOR_GYROSCOPE);
-    imu::Vector<3> rpy = myIMU.getVector(Adafruit_BNO055::VECTOR_EULER);
-
-    //populate data to msg
-    //imu_data.header.seq = 0;
-    imu_data.header.stamp = nh.now();
-    imu_data.header.frame_id = "imu_link";
-
-    q = tf::createQuaternionFromYaw(rpy.z());
-
-    imu_data.orientation.x = q.x;
-    imu_data.orientation.y = q.y;
-    imu_data.orientation.z = q.z;
-    imu_data.orientation.w = q.w;
-
-    imu_data.angular_velocity.x = gyr.x();
-    imu_data.angular_velocity.y = gyr.y();
-    imu_data.angular_velocity.z = gyr.z();
-
-    imu_data.linear_acceleration.x = acc.x();
-    imu_data.linear_acceleration.y = acc.y();
-    imu_data.linear_acceleration.z = acc.z();
-
-    imupub.publish( &imu_data );
   }
 
   // Update for next time step

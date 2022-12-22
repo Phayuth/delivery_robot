@@ -16,12 +16,13 @@ This Package is created for My Differential Drive Mobile Robot for Indoor Delive
 
 ### Mobile Robot Parameter
 
-|Parameter|Value|Parameter|Value|
-|---------|-----|---------|-----|
-|Width|...m|Base Length|0.44 m|
-|Length|...m|Wheel Radius|0.07 m|
-|Height|...m|Wheel Base to Caster Wheel|...m|
-|Weight|...kg|Ground Clearance|...m|
+| Parameter | Value | Parameter                  | Value  | Motor Left | Value     | Motor Right | Value     |
+|-----------|-------|----------------------------|--------|------------|-----------|-------------|-----------|
+| Width     | ...m  | Base Length                | 0.44 m | a          | 26.63     | a           | 28.37     |
+| Length    | ...m  | Wheel Radius               | 0.07 m | b          | 17.26     | b           | 19.15     |
+| Height    | ...m  | Wheel Base to Caster Wheel | ...m   | c          | 6.776     | c           | 5.75      |
+| Weight    | ...kg | Ground Clearance           | ...m   | GR         | 19.2x3.75 | GR          | 19.2x3.75 |
+|           |       |                            |        | PPR        | 28        | PPR         | 28        |
 
 
 ### Reference
