@@ -77,7 +77,7 @@ void right_cmd_pwm_cb(const std_msgs::Float32& msg); // function prototype
 
 // Publish Motor Stat
 dlvr_robot_msg::motor_stat pub_motor_stat;
-ros::Publisher motorPub("/dlvr/left_motor_stat", &pub_motor_stat);
+ros::Publisher motorPub("/dlvr/motor_stat", &pub_motor_stat);
 
 // Subscribe Left/Right wheel velocity
 ros::Subscriber<std_msgs::Float32> left_sub("/dlvr/left_motor_desired", &left_cmd_pwm_cb);

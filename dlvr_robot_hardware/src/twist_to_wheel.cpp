@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "Twist_to_wheel");
 	
 	ROS_INFO("Starting");
-	Publisher2Subscriber1<std_msgs::Float32, std_msgs::Float32, geometry_msgs::Twist> twist_to_wheel("/dlvr/left_motor_desired","/dlvr/right_motor_desired","cmd_vel",1);
+	Publisher2Subscriber1<std_msgs::Float32, std_msgs::Float32, geometry_msgs::Twist> twist_to_wheel("/dlvr/left_motor_desired","/dlvr/right_motor_desired","/dlvr/cmd_vel",1);
 
 	ros::spin();
 }
