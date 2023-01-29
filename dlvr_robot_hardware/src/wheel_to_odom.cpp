@@ -1,7 +1,13 @@
+// This node is for calculate odometry from pure dead reackoining encoder right now, and it's is not publish any tf
+// the node with tf is at the other file name "wheel_to_odom_with_tf"
+// I am testing this to use with ros pacakge "robot_localization".
+// robot_localization with handle the task of publish tf on its own
+
 #include <ros/ros.h>
 #include <dlvr_robot_msg/motor_stat.h>
 #include <tf/transform_broadcaster.h>
 #include <nav_msgs/Odometry.h>
+
 
 // Motor Parameters
 double L_GR = 72;
@@ -43,8 +49,7 @@ int main(int argc, char **argv)
   ros::init(argc, argv, "odometry_publisher");
   ROS_INFO("STARTING Odometry Publisher");
   ros::NodeHandle n;
-  ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("/dlvr/odom", 50);
-  tf::TransformBroadcaster odom_broadcaster;
+  ros::Publisher odom_pub = n.advertise<nav_msgs::Odometry>("dlvr/sensor_wheel_enc_odom", 50);
 
   ros::Subscriber sub = n.subscribe("/dlvr/motor_stat", 1, chatterCallback);
 
@@ -53,8 +58,6 @@ int main(int argc, char **argv)
   last_time = ros::Time::now();
 
   ros::Rate rosrate(100.0);
-
-  // ros::spin();
 
   while(n.ok()){
 
@@ -84,21 +87,7 @@ int main(int argc, char **argv)
     //since all odometry is 6DOF we'll need a quaternion created from yaw
     geometry_msgs::Quaternion odom_quat = tf::createQuaternionMsgFromYaw(th);
 
-    //first, we'll publish the transform over tf
-    geometry_msgs::TransformStamped odom_trans;
-    odom_trans.header.stamp = current_time;
-    odom_trans.header.frame_id = "odom";
-    odom_trans.child_frame_id = "base_link";
-
-    odom_trans.transform.translation.x = x;
-    odom_trans.transform.translation.y = y;
-    odom_trans.transform.translation.z = 0.0;
-    odom_trans.transform.rotation = odom_quat;
-
-    //send the transform
-    odom_broadcaster.sendTransform(odom_trans);
-
-    //next, we'll publish the odometry message over ROS
+    //we'll publish the odometry message over ROS
     nav_msgs::Odometry odom;
     odom.header.stamp = current_time;
     odom.header.frame_id = "odom";
