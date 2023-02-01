@@ -24,6 +24,9 @@ include_directories(
 add_executable(twist_to_wheel src/twist_to_wheel.cpp)
 target_link_libraries(twist_to_wheel ${catkin_LIBRARIES})
 
+add_executable(twist_to_wheel_sim src/twist_to_wheel_sim.cpp)
+target_link_libraries(twist_to_wheel_sim ${catkin_LIBRARIES})
+
 add_executable(wheel_to_odom src/wheel_to_odom.cpp)
 target_link_libraries(wheel_to_odom ${catkin_LIBRARIES})
 add_dependencies(wheel_to_odom dlvr_robot_msg_generate_messages_cpp) # add this when depend on other package
